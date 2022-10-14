@@ -1,7 +1,13 @@
+using CosmosDBExample.Utilities;
+using Microsoft.Azure.Cosmos;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services
+       .AddServices(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 

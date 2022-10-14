@@ -5,6 +5,25 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">@Model?.Product?.Id</h1>
+    <p>Category: @Model?.Product?.Category</p>
+</div>
+
+<div>
+    <h1>Create a new Product</h1>
+    <form method="post">
+        <label>Id:</label>
+        <input type="text" name="id" />
+
+        <label>Name:</label>
+        <input type="text" name="name" />
+
+        <label>Category:</label>
+        <input type="text" name="category" value="gear-surf-surfboards" />
+
+        <label>Quantity:</label>
+        <input type="number" name="quantity" />
+
+        <button type="submit">Create</button>
+    </form>
 </div>
