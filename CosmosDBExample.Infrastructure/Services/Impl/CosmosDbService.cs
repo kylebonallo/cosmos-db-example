@@ -1,6 +1,8 @@
 ﻿using CosmosDBExample.Core.ProductAggregate;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Logging;
+using System;
 using System.ComponentModel;
 using Container = Microsoft.Azure.Cosmos.Container;
 
@@ -9,8 +11,11 @@ namespace CosmosDBExample.Infrastructure.Services.Impl
     public class CosmosDbService : ICosmosDbService
     {
         private CosmosClient _cosmosClient;
-        private static string DatabaseId = "companyproducts";
         private readonly ILogger<CosmosDbService> _logger;
+
+        public const string ContainerId = "products";
+        public const string DatabaseId = "companyproducts";
+        public const string PartitionKeyPath = "/category";
 
         public CosmosDbService(CosmosClient cosmosClient, ILogger<CosmosDbService> logger)
         {
@@ -35,8 +40,7 @@ namespace CosmosDBExample.Infrastructure.Services.Impl
             // Container reference with creation if it does not alredy exist
             Container container = await database.CreateContainerIfNotExistsAsync(
                 id: containerId,
-                partitionKeyPath: partitionKeyPath,
-                throughput: 400
+                partitionKeyPath: partitionKeyPath
             );
 
             return container;
@@ -44,7 +48,7 @@ namespace CosmosDBExample.Infrastructure.Services.Impl
 
         public async Task<Product> GetItemAsync(string id, string partitionKey)
         {
-            var container = await GetOrCreateContainerAsync("products", "/category");
+            var container = await GetOrCreateContainerAsync(ContainerId, PartitionKeyPath);
 
             try
             {
@@ -63,13 +67,32 @@ namespace CosmosDBExample.Infrastructure.Services.Impl
             }
         }
 
+        public async Task<FeedResponse<Product>?> GetAllItemsInContainerAsync(string containerId = ContainerId, string partitionKeyPath = PartitionKeyPath)
+        {
+            var container = await GetOrCreateContainerAsync(containerId, partitionKeyPath);
+
+            try
+            {
+                var q = container.GetItemLinqQueryable<Product>();
+                var iterator = q.ToFeedIterator();
+                var results = await iterator.ReadNextAsync();
+
+                return results;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.InnerException.Message);
+                throw;
+            }
+        }
+
         public async Task<Product> CreateProductAsync(Product newProduct)
         {
-            var container = await GetOrCreateContainerAsync("products", "/category");
+            var container = await GetOrCreateContainerAsync(ContainerId, PartitionKeyPath);
 
             var createdItem = await container.UpsertItemAsync<Product>(
                 item: newProduct,
-                partitionKey: new PartitionKey("gear-surf-surfboards"));
+                partitionKey: new PartitionKey(newProduct.Category));
 
             return createdItem;
         }

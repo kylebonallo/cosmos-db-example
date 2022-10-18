@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{978C634B-57E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosmosDBExample", "Src\CosmosDBExample\CosmosDBExample.csproj", "{63CE5B3B-D163-4DBD-AD35-EEA50207E8CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosDBExample.Infrastructure", "CosmosDBExample.Infrastructure\CosmosDBExample.Infrastructure.csproj", "{BF6A6399-59E7-4A63-8829-FF29A8A10F6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosmosDBExample.Infrastructure", "CosmosDBExample.Infrastructure\CosmosDBExample.Infrastructure.csproj", "{BF6A6399-59E7-4A63-8829-FF29A8A10F6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosDBExample.Core", "CosmosDBExample.Core\CosmosDBExample.Core.csproj", "{2F591EEB-F20D-4EA2-90D8-92EAC036C394}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosmosDBExample.Core", "CosmosDBExample.Core\CosmosDBExample.Core.csproj", "{2F591EEB-F20D-4EA2-90D8-92EAC036C394}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
